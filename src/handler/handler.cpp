@@ -25,14 +25,13 @@ std::expected<std::monostate, std::string> riscv_handler::step_prog() {
     return std::unexpected("PC out of bounds");
 
   std::uint32_t current_instr = program_instrs[pc];
-  auto decoded_instr = r_dec.to_instr(current_instr, regs, &memory);
+  auto decoded_instr = r_dec.to_instr(current_instr, regs, &memory, &pc);
 
   if (!decoded_instr.has_value())
     return std::unexpected(decoded_instr.error());
 
   // looks like it decoded just fine, we can emulate it now and inc pc
   (*decoded_instr)->emu();
-  pc++;
 
   return std::monostate{};
 }
