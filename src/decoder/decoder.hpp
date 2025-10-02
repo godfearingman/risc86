@@ -6,6 +6,7 @@
 
 #include "../instruction/i_type/i_type.hpp"
 #include "../instruction/r_type/r_type.hpp"
+#include "../instruction/s_type/s_type.hpp"
 
 class decoder {
 private:
