@@ -9,6 +9,8 @@ class instruction {
 public:
   // our memory
   std::vector<std::uint8_t> *memory;
+  // our program counter
+  std::uint32_t *pc;
   // our registers
   std::uint32_t *regs;
   // the only part of each instruction that is shared in all types is the
@@ -18,8 +20,8 @@ public:
   std::uint32_t raw;
   // our constructor which will take the raw and populate our locals
   instruction(std::uint32_t raw, std::uint32_t *regs,
-              std::vector<std::uint8_t> *memory)
-      : raw(raw), regs(regs), memory(memory) {
+              std::vector<std::uint8_t> *memory, std::uint32_t *pc)
+      : raw(raw), regs(regs), memory(memory), pc(pc) {
     opcode = raw & 0x7f;
   };
   // our emulation
