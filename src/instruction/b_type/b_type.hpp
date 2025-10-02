@@ -3,7 +3,7 @@
 
 class instruction_b : public instruction {
 private:
-  // in S type instructions we have these fields (as well as the inherited
+  // in B type instructions we have these fields (as well as the inherited
   // opcode)
   std::uint8_t funct3;
   std::uint8_t rs1;
