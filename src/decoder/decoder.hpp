@@ -16,5 +16,5 @@ public:
   decoder();
   std::expected<std::unique_ptr<instruction>, std::string>
   to_instr(std::uint32_t instr, std::uint32_t *regs,
-           std::vector<std::uint8_t> *memory);
+           std::vector<std::uint8_t> *memory, std::uint32_t *pc);
 };
