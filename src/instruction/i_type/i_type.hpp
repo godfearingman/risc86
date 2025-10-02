@@ -13,8 +13,8 @@ private:
 public:
   // handle the construction of this type'd class
   instruction_i(std::uint32_t instr, std::uint32_t *regs,
-                std::vector<std::uint8_t> *memory)
-      : instruction(instr, regs, memory) {
+                std::vector<std::uint8_t> *memory, std::uint32_t *pc)
+      : instruction(instr, regs, memory, pc) {
     // Since we're moving onwards from bits 0-6 we'll start past it
     rd = (instr >> 7) & 0x1f;
     funct3 = (instr >> 12) & 0x07;
@@ -47,7 +47,6 @@ public:
       }
       case 0x7: {
         res_val = rs1_val & imm;
-
         break;
       }
       // Cases 1 -> 5 only use the lower 5 bits of the imm for the actual shift,
@@ -105,5 +104,6 @@ public:
 
     regs[rd] = res_val;
     regs[0] = 0;
+    pc++;
   }
 };
