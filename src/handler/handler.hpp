@@ -30,13 +30,4 @@ public:
   // our emulation functions
   void load_program(const std::vector<std::uint32_t> &program);
   std::expected<std::monostate, std::string> step_prog();
-
-  void write_mem_word(std::uint32_t addr, std::uint32_t val) {
-    if (addr + 3 >= memory.size())
-      return;
-    memory[addr] = val & 0xff;
-    memory[addr + 1] = (val >> 8) & 0xff;
-    memory[addr + 2] = (val >> 16) & 0xff;
-    memory[addr + 3] = (val >> 24) & 0xff;
-  }
 };
