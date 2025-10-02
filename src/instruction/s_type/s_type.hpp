@@ -13,8 +13,8 @@ private:
 public:
   // handle the construction of this type'd class
   instruction_s(std::uint32_t instr, std::uint32_t *regs,
-                std::vector<std::uint8_t> *memory)
-      : instruction(instr, regs, memory) {
+                std::vector<std::uint8_t> *memory, std::uint32_t *pc)
+      : instruction(instr, regs, memory, pc) {
     std::int32_t imm_lower = (instr >> 7) & 0x1f;
     funct3 = (instr >> 12) & 0x07;
     rs1 = (instr >> 15) & 0x1f;
@@ -43,5 +43,6 @@ public:
     }
 
     regs[0] = 0;
+    pc++;
   }
 };
