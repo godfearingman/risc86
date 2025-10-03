@@ -9,6 +9,7 @@
 #include "../instruction/s_type/s_type.hpp"
 #include "../instruction/b_type/b_type.hpp"
 #include "../instruction/u_type/u_type.hpp"
+#include "../instruction/j_type/j_type.hpp"
 
 class decoder {
 private:
