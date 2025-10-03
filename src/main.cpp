@@ -1,8 +1,7 @@
 #include "handler/handler.hpp"
 
 int main() {
-  auto hnd = riscv_handler();
+  // TODO: ADD JALR WHEN U WAKE UP
   std::getchar();
-
   return 0;
 }
