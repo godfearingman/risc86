@@ -3,7 +3,7 @@
 
 class instruction_u : public instruction {
 private:
-  // in S type instructions we have these fields (as well as the inherited
+  // in U type instructions we have these fields (as well as the inherited
   // opcode)
   std::uint8_t rd;
   std::int32_t imm;
