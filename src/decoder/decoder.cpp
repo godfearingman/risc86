@@ -19,6 +19,9 @@ decoder::to_instr(std::uint32_t instr, std::uint32_t *regs,
     return std::make_unique<instruction_s>(instr, regs, memory, pc);
   case 0x63:
     return std::make_unique<instruction_b>(instr, regs, memory, pc);
+  case 0x37:
+  case 0x17:
+    return std::make_unique<instruction_u>(instr, regs, memory, pc);
   }
 
   return std::unexpected("invalid opcode");
