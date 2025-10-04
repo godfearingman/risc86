@@ -3,6 +3,8 @@
 
 class instruction_i : public instruction {
 private:
+  // our syscall handler
+  inline static syscall_handler sys_hn;
   // in I type instructions we have these fields (as well as the inherited
   // opcode)
   std::uint8_t rd;
@@ -112,6 +114,13 @@ public:
       regs[rd] = (*pc + 1) * 4;
       *pc = targ / 4;
       return;
+    }
+    case 0x73: {
+      if (imm == 0x0) {
+        std::uint32_t syscall_num = regs[17];
+        sys_hn.find_and_invoke(syscall_num, regs, memory);
+      }
+      // deal with ebreak later
     }
     }
 
