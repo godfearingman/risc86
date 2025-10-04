@@ -100,6 +100,19 @@ public:
       }
       break;
     }
+    case 0x67: {
+      // The indirect jump instruction JALR (jump and link register) uses the
+      // I-type encoding. The target address is obtained by adding the
+      // sign-extended 12-bit I-immediate to the register rs1, then setting the
+      // least-significant bit of the result to zero. The address of the
+      // instruction following the jump (pc+4) is written to register rd.
+      // Register x0 can be used as the destination if the result is not
+      // required.
+      std::uint32_t targ = (regs[rs1] + imm) & ~1;
+      regs[rd] = (*pc + 1) * 4;
+      *pc = targ / 4;
+      return;
+    }
     }
 
     regs[rd] = res_val;
