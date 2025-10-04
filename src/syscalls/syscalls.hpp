@@ -3,6 +3,9 @@
 #include <functional>
 #include <unordered_map>
 
+#include "impl/process.hpp"
+#include "impl/io.hpp"
+
 class syscall_handler {
 public:
   using syscall_fn =
