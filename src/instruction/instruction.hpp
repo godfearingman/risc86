@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <vector>
 
+#include "../syscalls/syscalls.hpp"
+
 // since not all instructions types have the same structure we're going to make
 // this abstract and implement each sub-class based off of this for each type
 class instruction {
