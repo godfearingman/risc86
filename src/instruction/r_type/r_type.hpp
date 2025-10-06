@@ -1,5 +1,6 @@
 #pragma once
 #include "../instruction.hpp"
+#include <limits>
 
 class instruction_r : public instruction {
 private:
@@ -53,6 +54,67 @@ public:
                     : 0;
     } else if (funct3 == 0x3 && funct7 == 0x00) {
       res_val = rs1_val < rs2_val ? 1 : 0;
+    }
+    // RVM32 extensions
+    if (funct7 == 0x1) {
+      switch (funct3) {
+      case 0x0: {
+        res_val = rs1_val * rs2_val;
+        break;
+      }
+      case 0x1: {
+        std::int64_t final_val =
+            static_cast<std::int64_t>(static_cast<std::int32_t>(rs1_val)) *
+            static_cast<std::int64_t>(static_cast<std::int32_t>(rs2_val));
+        res_val = static_cast<std::uint32_t>(final_val >> 32);
+
+        break;
+      }
+      case 0x2: {
+        std::int64_t final_val =
+            static_cast<std::int64_t>(static_cast<std::int32_t>(rs1_val)) *
+            static_cast<std::uint64_t>(rs2_val);
+        res_val = static_cast<std::uint32_t>(final_val >> 32);
+        break;
+      }
+      case 0x3: {
+        std::uint64_t final_val = static_cast<std::uint64_t>(rs1_val) *
+                                  static_cast<std::uint64_t>(rs2_val);
+        res_val = static_cast<std::uint32_t>(final_val >> 32);
+        break;
+      }
+      case 0x4: {
+        if (rs2_val == 0)
+          res_val = -1;
+        else if (rs1_val == std::numeric_limits<std::int32_t>().min() &&
+                 rs2_val == static_cast<std::uint32_t>(-1))
+          res_val = std::numeric_limits<std::int32_t>().min();
+        else
+          res_val = static_cast<std::int32_t>(rs1_val) /
+                    static_cast<std::int32_t>(rs2_val);
+        break;
+      }
+      case 0x5: {
+        res_val =
+            (rs2_val == 0) ? static_cast<std::uint32_t>(-1) : rs1_val / rs2_val;
+        break;
+      }
+      case 0x6: {
+        if (rs2_val == 0)
+          res_val = rs1_val;
+        else if (rs1_val == std::numeric_limits<std::int32_t>().min() &&
+                 rs2_val == static_cast<std::uint32_t>(-1))
+          res_val = 0;
+        else
+          res_val = static_cast<std::int32_t>(rs1_val) %
+                    static_cast<std::int32_t>(rs2_val);
+        break;
+      }
+      case 0x7: {
+        res_val = (rs2_val == 0) ? rs1_val : rs1_val % rs2_val;
+        break;
+      }
+      }
     }
 
     // set the register
