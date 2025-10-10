@@ -26,7 +26,6 @@ public:
       regs[rd] = (*pc * 4) + (imm << 12);
     }
 
-    regs[0] = 0;
     (*pc)++;
   }
 };

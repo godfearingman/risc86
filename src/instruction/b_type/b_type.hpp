@@ -9,12 +9,14 @@ private:
   std::uint8_t rs1;
   std::uint8_t rs2;
   std::int32_t imm;
+  std::uint32_t inst;
 
 public:
   // handle the construction of this type'd class
   instruction_b(std::uint32_t instr, std::uint32_t *regs,
                 std::vector<std::uint8_t> *memory, std::uint32_t *pc)
       : instruction(instr, regs, memory, pc) {
+    inst = instr;
     std::int32_t imm_bit_11 = (instr >> 7) & 0x1;
     std::int32_t imm_lower = (instr >> 8) & 0xf;
     funct3 = (instr >> 12) & 0x07;
@@ -49,6 +51,7 @@ public:
       branch_taken = (static_cast<std::int32_t>(rs1_val) >=
                       static_cast<std::int32_t>(rs2_val));
       break;
+
     case 0x6:
       branch_taken = (rs1_val < rs2_val);
       break;
@@ -57,7 +60,6 @@ public:
       break;
     }
 
-    *pc += branch_taken ? (imm / 4) : 1;
-    regs[0] = 0;
+    *pc += branch_taken ? (imm >> 2) : 1;
   }
 };

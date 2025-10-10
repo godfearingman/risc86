@@ -32,7 +32,5 @@ public:
   void emu() override {
     regs[rd] = (*pc + 1) * 4;
     (*pc) += (imm / 4);
-
-    regs[0] = 0;
   }
 };

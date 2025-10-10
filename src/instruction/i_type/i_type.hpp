@@ -125,7 +125,6 @@ public:
     }
 
     regs[rd] = res_val;
-    regs[0] = 0;
     (*pc)++;
   }
 };
