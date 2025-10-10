@@ -1,6 +1,6 @@
 #include "decoder.hpp"
 
-decoder::decoder(){};
+decoder::decoder() {};
 
 std::expected<std::unique_ptr<instruction>, std::string>
 decoder::to_instr(std::uint32_t instr, std::uint32_t *regs,
@@ -28,5 +28,7 @@ decoder::to_instr(std::uint32_t instr, std::uint32_t *regs,
     return std::make_unique<instruction_j>(instr, regs, memory, pc);
   }
 
-  return std::unexpected("invalid opcode");
+  return std::unexpected(
+      std::format("[ERROR] PC 0x{:x}\tinvalid opcode 0x{:x}\traw  inst 0x{:x}",
+                  *pc * 4, opcode, instr));
 }
