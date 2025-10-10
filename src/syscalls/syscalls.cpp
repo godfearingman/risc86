@@ -1,6 +1,6 @@
 #include "syscalls.hpp"
-#include "impl/io.hpp"
-#include "impl/process.hpp"
+
+
 
 void syscall_handler::register_syscall(std::uint32_t id, syscall_fn fn) {
   map[id] = fn;
@@ -22,9 +22,14 @@ void syscall_handler::setup() {
   // io syscalls
   register_syscall(64, syscalls::syscall_write);
   register_syscall(63, syscalls::syscall_read);
+  register_syscall(80, syscalls::syscall_fstat);
+  register_syscall(57, syscalls::syscall_close);
 
   // process syscalls
   register_syscall(93, syscalls::syscall_exit);
+
+  // memory syscalls 
+  register_syscall(214, syscalls::syscall_brk);
 }
 
 syscall_handler::syscall_handler() { setup(); }
