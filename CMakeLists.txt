@@ -9,4 +9,12 @@ project(risc86)
 # include the files in the source tree.
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
+list(FILTER SOURCES EXCLUDE REGEX "src/external/ELFIO/examples/.*")
+list(FILTER SOURCES EXCLUDE REGEX "src/external/ELFIO/tests/.*")
+
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    src/external/ELFIO
+)
+
