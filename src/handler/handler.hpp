@@ -28,6 +28,7 @@ public:
   decoder r_dec;
 
 private:
+  std::uint64_t fregs[32];
   std::uint32_t regs[32];
   std::uint32_t pc;
   std::vector<std::uint8_t> memory;
