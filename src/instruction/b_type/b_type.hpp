@@ -14,8 +14,9 @@ private:
 public:
   // handle the construction of this type'd class
   instruction_b(std::uint32_t instr, std::uint32_t *regs,
-                std::vector<std::uint8_t> *memory, std::uint32_t *pc)
-      : instruction(instr, regs, memory, pc) {
+                std::vector<std::uint8_t> *memory, std::uint32_t *pc,
+                std::uint64_t *fregs)
+      : instruction(instr, regs, memory, pc, fregs) {
     inst = instr;
     std::int32_t imm_bit_11 = (instr >> 7) & 0x1;
     std::int32_t imm_lower = (instr >> 8) & 0xf;
