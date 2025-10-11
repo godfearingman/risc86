@@ -15,8 +15,9 @@ private:
 public:
   // handle the construction of this type'd class
   instruction_i(std::uint32_t instr, std::uint32_t *regs,
-                std::vector<std::uint8_t> *memory, std::uint32_t *pc)
-      : instruction(instr, regs, memory, pc) {
+                std::vector<std::uint8_t> *memory, std::uint32_t *pc,
+                std::uint64_t *fregs)
+      : instruction(instr, regs, memory, pc, fregs) {
     // Since we're moving onwards from bits 0-6 we'll start past it
     rd = (instr >> 7) & 0x1f;
     funct3 = (instr >> 12) & 0x07;
@@ -101,6 +102,22 @@ public:
         break;
       }
       break;
+    }
+    case 0x7: {
+      if (funct3 == 2) {
+        std::uint32_t addr = rs1_val + imm;
+        std::uint32_t word = read_word(addr);
+
+        fregs[rd] = 0xFFFFFFFF00000000 | word;
+        (*pc)++;
+        return;
+      } else if (funct3 == 3) {
+        std::uint32_t addr = rs1_val + imm;
+        std::uint64_t word = read_doubleword(addr);
+        fregs[rd] = word;
+        (*pc)++;
+        return;
+      }
     }
     case 0x67: {
       // The indirect jump instruction JALR (jump and link register) uses the
