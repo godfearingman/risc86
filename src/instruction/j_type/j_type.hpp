@@ -11,8 +11,9 @@ private:
 public:
   // handle the construction of this type'd class
   instruction_j(std::uint32_t instr, std::uint32_t *regs,
-                std::vector<std::uint8_t> *memory, std::uint32_t *pc)
-      : instruction(instr, regs, memory, pc) {
+                std::vector<std::uint8_t> *memory, std::uint32_t *pc,
+                std::uint64_t *fregs)
+      : instruction(instr, regs, memory, pc, fregs) {
     rd = (instr >> 7) & 0x1f;
 
     // this is the worst most scrambled mess i've ever seen on the manual so far
