@@ -2,9 +2,11 @@
 
 riscv_handler::riscv_handler() {
   // Set all registers to 0
-  for (int i = 0; i < (sizeof(regs) / sizeof(std::uint32_t)); i++) {
+  for (int i = 0; i < (sizeof(regs) / sizeof(std::uint32_t)); i++)
     regs[i] = 0;
-  }
+
+  for (int i = 0; i < (sizeof(fregs) / sizeof(std::uint64_t)); i++)
+    fregs[i] = 0;
 
   // create our decoder class object as well as initialise pc to 0
   pc = 0;
@@ -69,7 +71,7 @@ std::expected<std::monostate, std::string> riscv_handler::step_prog() {
   check_bp(breakpoints_type::OPCODE, current_instr & 0x7f);
   check_bp(breakpoints_type::ADDRESS, byte_addr);
 
-  auto decoded_instr = r_dec.to_instr(current_instr, regs, &memory, &pc);
+  auto decoded_instr = r_dec.to_instr(current_instr, regs, &memory, &pc, fregs);
 
   if (!decoded_instr.has_value())
     return std::unexpected(decoded_instr.error());
@@ -99,8 +101,15 @@ void riscv_handler::dump_reg(std::uint8_t count) const {
        idx++) {
     if (idx % 4 == 0)
       std::puts("");
-    std::printf("x%d = 0x%x ", idx, regs[idx]);
+    std::printf("x%d = 0x%x\t", idx, regs[idx]);
   }
+  for (std::uint8_t idx = 0; idx < (sizeof(fregs) / sizeof(std::uint64_t));
+       idx++) {
+    if (idx % 4 == 0)
+      std::puts("");
+    std::printf("f%d = %f\t", idx, static_cast<double>(fregs[idx]));
+  }
+
   std::printf("\n=====================\n");
 
   if (is_debug)
