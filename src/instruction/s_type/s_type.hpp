@@ -13,8 +13,9 @@ private:
 public:
   // handle the construction of this type'd class
   instruction_s(std::uint32_t instr, std::uint32_t *regs,
-                std::vector<std::uint8_t> *memory, std::uint32_t *pc)
-      : instruction(instr, regs, memory, pc) {
+                std::vector<std::uint8_t> *memory, std::uint32_t *pc,
+                std::uint64_t *fregs)
+      : instruction(instr, regs, memory, pc, fregs) {
     std::int32_t imm_lower = (instr >> 7) & 0x1f;
     funct3 = (instr >> 12) & 0x07;
     rs1 = (instr >> 15) & 0x1f;
@@ -29,6 +30,20 @@ public:
 
   void emu() override {
     std::uint32_t rs2_val = regs[rs2], addr = regs[rs1] + imm;
+
+    if (opcode == 0x27) {
+      if (funct3 == 0x2) {
+        std::uint32_t word = fregs[rs2] & 0xFFFFFFFF;
+        write_word(addr, word);
+        (*pc)++;
+        return;
+      } else if (funct3 == 0x3) {
+        std::uint64_t dword = fregs[rs2];
+        write_doubleword(addr, dword);
+        (*pc)++;
+        return;
+      }
+    }
 
     switch (funct3) {
     case 0x0:
