@@ -6,6 +6,7 @@
 #include "impl/io.hpp"
 #include "impl/process.hpp"
 #include "impl/memory.hpp"
+#include "impl/sdl.hpp"
 
 class syscall_handler {
 public:
