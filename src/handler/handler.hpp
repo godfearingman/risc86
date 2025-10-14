@@ -22,8 +22,8 @@ public:
   std::uint32_t get_inst_count() const;
   void add_bp(breakpoints_type t, std::uint32_t v, const std::string& d);
 private:
-  void check_bp(breakpoints_type t, std::uint32_t v) const;
-  void dump_reg(std::uint8_t count = 32) const;
+  void check_bp(breakpoints_type t, std::uint32_t v);
+  void dump_reg(std::uint8_t count = 32);
 public:
   decoder r_dec;
 
