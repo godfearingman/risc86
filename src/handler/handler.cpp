@@ -14,7 +14,7 @@ riscv_handler::riscv_handler() {
   is_debug = false;
   is_trace = false;
 
-  memory.resize(1024 * 1024 * 128, 0);
+  memory.resize(1024 * 1024 * 1024, 0);
 }
 
 void riscv_handler::load_program(const std::string &path_to_elf) {
@@ -95,7 +95,8 @@ std::uint32_t riscv_handler::get_reg(std::uint8_t reg) const {
   return (reg < (sizeof(regs) / sizeof(std::uint32_t))) ? regs[reg] : 0;
 }
 
-void riscv_handler::dump_reg(std::uint8_t count) const {
+void riscv_handler::dump_reg(std::uint8_t count) {
+  is_trace = true;
   std::printf("\n=== register dump ===\n");
   for (std::uint8_t idx = 0; idx < (sizeof(regs) / sizeof(std::uint32_t));
        idx++) {
@@ -122,7 +123,7 @@ void riscv_handler::enable_debug(bool cond) { is_debug = cond; }
 
 void riscv_handler::enable_trace(bool cond) { is_trace = cond; }
 
-void riscv_handler::check_bp(breakpoints_type t, std::uint32_t v) const {
+void riscv_handler::check_bp(breakpoints_type t, std::uint32_t v)  {
   for (const auto &bp : bps) {
     if (t == bp.type && v == bp.value) {
       std::printf("[BP] %s (value=0x%x)\n", bp.desc.c_str(), bp.value);
