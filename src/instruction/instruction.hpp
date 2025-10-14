@@ -35,7 +35,8 @@ public:
 
   std::uint8_t read_byte(std::uint32_t addr) const {
     if (addr >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return 0;
     }
     return memory->at(addr);
@@ -43,7 +44,8 @@ public:
 
   std::uint16_t read_halfword(std::uint32_t addr) const {
     if (addr + 1 >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return 0;
     }
     return memory->at(addr) | (memory->at(addr + 1) << 8);
@@ -51,7 +53,8 @@ public:
 
   std::uint32_t read_word(std::uint32_t addr) const {
     if (addr + 3 >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return 0;
     }
     return memory->at(addr) | (memory->at(addr + 1) << 8) |
@@ -60,7 +63,8 @@ public:
 
   std::uint64_t read_doubleword(std::uint32_t addr) const {
     if (addr + 7 >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return 0;
     }
     std::uint64_t val =
@@ -77,7 +81,8 @@ public:
 
   void write_byte(std::uint32_t addr, std::uint8_t val) {
     if (addr >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return;
     }
     memory->at(addr) = val;
@@ -85,7 +90,8 @@ public:
 
   void write_halfword(std::uint32_t addr, std::uint16_t val) {
     if (addr + 1 >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return;
     }
     memory->at(addr) = val & 0xff;
@@ -94,7 +100,8 @@ public:
 
   void write_word(std::uint32_t addr, std::uint32_t val) {
     if (addr + 3 >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return;
     }
     memory->at(addr) = val & 0xff;
@@ -104,7 +111,8 @@ public:
   }
   void write_doubleword(std::uint32_t addr, std::uint64_t val) {
     if (addr + 7 >= memory->size()) {
-      std::printf("0x%x out of bounds\n", addr);
+      std::printf("[0x%x] 0x%x out of bounds\n", *pc * 4, addr);
+      std::getchar();
       return;
     }
     memory->at(addr) = val & 0xff;
